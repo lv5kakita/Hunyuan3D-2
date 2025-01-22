@@ -400,4 +400,4 @@ if __name__ == '__main__':
 
     demo = build_app()
     app = gr.mount_gradio_app(app, demo, path="/")
-    uvicorn.run(app, host="0.0.0.0", port=args.port)
+    uvicorn.run(app, port=args.port)
