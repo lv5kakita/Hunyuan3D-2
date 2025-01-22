@@ -19,7 +19,7 @@ def get_example_img_list():
 def get_example_txt_list():
     print('Loading example txt list ...')
     txt_list = list()
-    for line in open('./assets/example_prompts.txt'):
+    for line in open('./assets/example_prompts.txt', encoding='utf-8'):
         txt_list.append(line.strip())
     return txt_list
 
@@ -50,11 +50,11 @@ def build_model_viewer_html(save_folder, height=660, width=790, textured=False):
     if textured:
         related_path = f"./textured_mesh.glb"
         template_name = './assets/modelviewer-textured-template.html'
-        output_html_path = os.path.join(save_folder, f'textured_mesh.html')
+        output_html_path = os.path.join(save_folder, f'textured_mesh.html').replace('\\', '/')
     else:
         related_path = f"./white_mesh.glb"
         template_name = './assets/modelviewer-template.html'
-        output_html_path = os.path.join(save_folder, f'white_mesh.html')
+        output_html_path = os.path.join(save_folder, f'white_mesh.html').replace('\\', '/')
 
     with open(os.path.join(CURRENT_DIR, template_name), 'r') as f:
         template_html = f.read()
@@ -71,8 +71,9 @@ def build_model_viewer_html(save_folder, height=660, width=790, textured=False):
     with open(output_html_path, 'w') as f:
         f.write(template_html.replace('<model-viewer>', obj_html))
 
-    output_html_path = output_html_path.replace(SAVE_DIR + '/', '')
-    iframe_tag = f'<iframe src="/static/{output_html_path}" height="{height}" width="100%" frameborder="0"></iframe>'
+    iframe_path = output_html_path.replace(SAVE_DIR + '/', '')
+
+    iframe_tag = f'<iframe src="/static/{iframe_path}" height="{height}" width="100%" frameborder="0"></iframe>'
     print(f'Find html {output_html_path}, {os.path.exists(output_html_path)}')
 
     return f"""
@@ -389,4 +390,4 @@ if __name__ == '__main__':
 
     demo = build_app()
     app = gr.mount_gradio_app(app, demo, path="/")
-    uvicorn.run(app, host="0.0.0.0", port=args.port)
+    uvicorn.run(app, port=args.port)

@@ -116,16 +116,23 @@ You may follow the next steps to use Hunyuan3D 2.0 via code or the Gradio App.
 
 ### Install Requirements
 
-Please install Pytorch via the [official](https://pytorch.org/) site. Then install the other requirements via
+~~Please install Pytorch via the [official](https://pytorch.org/) site. Then install the other requirements via~~
 
-```bash
-pip install -r requirements.txt
-# for texture
+~~```bash~~
+~~pip install -r requirements.txt
+~~# for texture
 cd hy3dgen/texgen/custom_rasterizer
 python3 setup.py install
 cd hy3dgen/texgen/differentiable_renderer
-bash compile_mesh_painter.sh
-```
+bash compile_mesh_painter.sh~~
+~~```~~
+  Give unrestricted script access to powershell so venv can work:
+
+- Open an administrator powershell window
+- Type `Set-ExecutionPolicy Unrestricted` and answer A
+- Close admin powershell window
+
+powershell run with `1、install-uv-qinglong.ps1` (right click then choose `use powershell run`) auto install in one-clik
 
 ### API Usage
 
@@ -165,9 +172,11 @@ for handcrafted mesh**.
 
 You could also host a [Gradio](https://www.gradio.app/) App in your own computer via:
 
-```bash
-python3 gradio_app.py
-```
+~~```bash
+python3 gradio_app.py~~
+~~```~~
+
+powershell run with `2、run_gui.ps1` (right click then choose `use powershell run`)
 
 Don't forget to visit [Hunyuan3D](https://3d.hunyuan.tencent.com) for quick use, if you don't want to host yourself.
 
