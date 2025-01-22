@@ -1,5 +1,8 @@
 # run script by @bdsqlsz
 
+$port = ""
+$enable_t23d = $true
+
 # Activate python venv
 Set-Location $PSScriptRoot
 if ($env:OS -ilike "*windows*") {
@@ -25,7 +28,16 @@ $Env:HF_HOME = $PSScriptRoot+"\huggingface"
 $Env:TORCH_HOME= $PSScriptRoot+"\torch"
 #$Env:HF_ENDPOINT = "https://hf-mirror.com"
 $Env:XFORMERS_FORCE_DISABLE_TRITON = "1"
+$ext_args = [System.Collections.ArrayList]::new()
 
-python gradio_app.py
+if ($port) {
+  [void]$ext_args.Add("--port=$port")
+}
+
+if ($enable_t23d) {
+  [void]$ext_args.Add("--enable_t23d")
+}
+
+python gradio_app.py $ext_args
 
 Read-Host | Out-Null ;
