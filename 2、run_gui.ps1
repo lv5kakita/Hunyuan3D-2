@@ -1,7 +1,7 @@
 # run script by @bdsqlsz
 
 $port = ""
-$enable_t23d = $true
+$enable_t23d = $false
 
 # Activate python venv
 Set-Location $PSScriptRoot
