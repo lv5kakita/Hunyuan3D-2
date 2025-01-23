@@ -6,6 +6,7 @@ $enable_t23d = $false
 # Activate python venv
 Set-Location $PSScriptRoot
 if ($env:OS -ilike "*windows*") {
+  chcp 65001
   if (Test-Path "./venv/Scripts/activate") {
     Write-Output "Windows venv"
     ./venv/Scripts/activate

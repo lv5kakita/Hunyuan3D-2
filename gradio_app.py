@@ -56,7 +56,7 @@ def build_model_viewer_html(save_folder, height=660, width=790, textured=False):
         template_name = './assets/modelviewer-template.html'
         output_html_path = os.path.join(save_folder, f'white_mesh.html').replace('\\', '/')
 
-    with open(os.path.join(CURRENT_DIR, template_name), 'r') as f:
+    with open(os.path.join(CURRENT_DIR, template_name), 'r', encoding='utf-8') as f:
         template_html = f.read()
         obj_html = f"""
             <div class="column is-mobile is-centered">
@@ -68,7 +68,7 @@ def build_model_viewer_html(save_folder, height=660, width=790, textured=False):
             </div>
             """
 
-    with open(output_html_path, 'w') as f:
+    with open(output_html_path, 'w', encoding='utf-8') as f:
         f.write(template_html.replace('<model-viewer>', obj_html))
 
     iframe_path = output_html_path.replace(SAVE_DIR + '/', '')
