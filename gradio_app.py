@@ -47,6 +47,7 @@ def export_mesh(mesh, save_folder, textured=False):
 
 
 def build_model_viewer_html(save_folder, height=660, width=790, textured=False):
+    # Remove first folder from path to make relative path
     if textured:
         related_path = f"./textured_mesh.glb"
         template_name = './assets/modelviewer-textured-template.html'
@@ -71,10 +72,10 @@ def build_model_viewer_html(save_folder, height=660, width=790, textured=False):
     with open(output_html_path, 'w', encoding='utf-8') as f:
         f.write(template_html.replace('<model-viewer>', obj_html))
 
-    iframe_path = output_html_path.replace(SAVE_DIR + '/', '')
-
-    iframe_tag = f'<iframe src="/static/{iframe_path}" height="{height}" width="100%" frameborder="0"></iframe>'
-    print(f'Find html {output_html_path}, {os.path.exists(output_html_path)}')
+    rel_path = os.path.relpath(output_html_path, SAVE_DIR)
+    iframe_tag = f'<iframe src="/static/{rel_path}" height="{height}" width="100%" frameborder="0"></iframe>'
+    print(
+        f'Find html file {output_html_path}, {os.path.exists(output_html_path)}, relative HTML path is /static/{rel_path}')
 
     return f"""
         <div style='height: {height}; width: 100%;'>
@@ -270,7 +271,7 @@ def build_app():
                                         label="Text Prompts", examples_per_page=18)
 
         if not HAS_TEXTUREGEN:
-            gr.HTML(""")
+            gr.HTML("""
             <div style="margin-top: 20px;">
                 <b>Warning: </b>
                 Texture synthesis is disable due to missing requirements,
@@ -331,6 +332,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', type=int, default=8080)
+    parser.add_argument('--host', type=str, default='0.0.0.0')
     parser.add_argument('--cache-path', type=str, default='gradio_cache')
     parser.add_argument('--enable_t23d', action='store_true')
     args = parser.parse_args()
@@ -351,6 +353,11 @@ if __name__ == '__main__':
     """
     example_is = get_example_img_list()
     example_ts = get_example_txt_list()
+
+    from hy3dgen.texgen import Hunyuan3DPaintPipeline
+
+    texgen_worker = Hunyuan3DPaintPipeline.from_pretrained('tencent/Hunyuan3D-2')
+    HAS_TEXTUREGEN = True
 
     try:
         from hy3dgen.texgen import Hunyuan3DPaintPipeline
@@ -384,10 +391,10 @@ if __name__ == '__main__':
     # create a FastAPI app
     app = FastAPI()
     # create a static directory to store the static files
-    static_dir = Path('./gradio_cache')
+    static_dir = Path(SAVE_DIR).absolute()
     static_dir.mkdir(parents=True, exist_ok=True)
-    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+    app.mount("/static", StaticFiles(directory=static_dir, html=True), name="static")
 
     demo = build_app()
     app = gr.mount_gradio_app(app, demo, path="/")
-    uvicorn.run(app, port=args.port)
+    uvicorn.run(app, host=args.host, port=args.port)

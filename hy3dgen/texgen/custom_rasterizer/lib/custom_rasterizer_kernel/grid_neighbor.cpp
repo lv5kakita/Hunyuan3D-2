@@ -394,7 +394,8 @@ std::vector<std::vector<torch::Tensor>> build_hierarchy(std::vector<torch::Tenso
     std::vector<torch::Tensor> grid_evencorners(grids.size());
     std::vector<torch::Tensor> grid_oddcorners(grids.size());
 
-    texture_positions[0] = torch::zeros({static_cast<int64_t>(seq2pos.size() / 3), 3}, float_options);
+
+    texture_positions[0] = torch::zeros({static_cast<int64_t>(seq2pos.size() / 3), static_cast<int64_t>(3)}, float_options);
     texture_positions[1] = torch::zeros({static_cast<int64_t>(seq2pos.size() / 3)}, float_options);
     float* positions_out_ptr = texture_positions[0].data_ptr<float>();
     memcpy(positions_out_ptr, seq2pos.data(), sizeof(float) * seq2pos.size());
@@ -404,7 +405,7 @@ std::vector<std::vector<torch::Tensor>> build_hierarchy(std::vector<torch::Tenso
     }
 
     for (int i = 0; i < grids.size(); ++i) {
-        grid_neighbors[i] = torch::zeros({static_cast<int64_t>(grids[i].seq2grid.size()), 9}, int64_options);
+        grid_neighbors[i] = torch::zeros({static_cast<int64_t>(grids[i].seq2grid.size()), static_cast<int64_t>(9)}, int64_options);
         int64_t* nptr = grid_neighbors[i].data_ptr<int64_t>();
         for (int j = 0; j < grids[i].seq2neighbor.size(); ++j) {
             nptr[j] = grids[i].seq2neighbor[j];
@@ -534,9 +535,9 @@ std::vector<std::vector<torch::Tensor>> build_hierarchy_with_feat(
     std::vector<torch::Tensor> grid_evencorners(grids.size());
     std::vector<torch::Tensor> grid_oddcorners(grids.size());
 
-    texture_positions[0] = torch::zeros({static_cast<int64_t>(seq2pos.size() / 3), 3}, float_options);
+    texture_positions[0] = torch::zeros({static_cast<int64_t>(seq2pos.size() / 3), static_cast<int64_t>(3)}, float_options);
     texture_positions[1] = torch::zeros({static_cast<int64_t>(seq2pos.size() / 3)}, float_options);
-    texture_feats[0] = torch::zeros({static_cast<int64_t>(seq2feat.size()) / feat_channel, feat_channel}, float_options);
+    texture_feats[0] = torch::zeros({static_cast<int64_t>(seq2feat.size() / feat_channel), static_cast<int64_t>(feat_channel)}, float_options);
     float* positions_out_ptr = texture_positions[0].data_ptr<float>();
     memcpy(positions_out_ptr, seq2pos.data(), sizeof(float) * seq2pos.size());
     positions_out_ptr = texture_positions[1].data_ptr<float>();
@@ -547,7 +548,7 @@ std::vector<std::vector<torch::Tensor>> build_hierarchy_with_feat(
     memcpy(feats_out_ptr, seq2feat.data(), sizeof(float) * seq2feat.size());
 
     for (int i = 0; i < grids.size(); ++i) {
-        grid_neighbors[i] = torch::zeros({static_cast<int64_t>(grids[i].seq2grid.size()), 9}, int64_options);
+        grid_neighbors[i] = torch::zeros({static_cast<int64_t>(grids[i].seq2grid.size()), static_cast<int64_t>(9)}, int64_options);
         int64_t* nptr = grid_neighbors[i].data_ptr<int64_t>();
         for (int j = 0; j < grids[i].seq2neighbor.size(); ++j) {
             nptr[j] = grids[i].seq2neighbor[j];
