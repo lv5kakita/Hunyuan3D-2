@@ -166,6 +166,10 @@ class DegenerateFaceRemover:
             ms = pymeshlab.MeshSet()
             ms.load_new_mesh(temp_file.name)
 
+        temp_file = tempfile.NamedTemporaryFile(suffix='.ply', delete=True)
+        temp_file.close()
+        temp_file_name = temp_file.name
+        
         ms.save_current_mesh(temp_file_name)
         ms = pymeshlab.MeshSet()
         ms.load_new_mesh(temp_file_name)
