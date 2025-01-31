@@ -105,7 +105,7 @@ pip install -r requirements.txt
 cd hy3dgen/texgen/custom_rasterizer
 python3 setup.py install
 cd hy3dgen/texgen/differentiable_renderer
-bash compile_mesh_painter.sh OR python3 setup.py install (on Windows)
+python3 setup.py install
 ```
 
 ### APIの使い方
@@ -171,10 +171,10 @@ python3 gradio_app.py
     primaryClass={cs.CV}
 }
 
-@misc{yang2024tencent,
-    title={Tencent Hunyuan3D-1.0: A Unified Framework for Text-to-3D and Image-to-3D Generation},
-    year={2024},
+@misc{yang2024hunyuan3d,
+    title={Hunyuan3D 1.0: A Unified Framework for Text-to-3D and Image-to-3D Generation},
     author={Tencent Hunyuan3D Team},
+    year={2024},
     eprint={2411.02293},
     archivePrefix={arXiv},
     primaryClass={cs.CV}
